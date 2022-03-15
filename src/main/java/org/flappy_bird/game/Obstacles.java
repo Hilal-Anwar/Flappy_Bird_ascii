@@ -8,11 +8,12 @@ public class Obstacles {
     private final int thickness = 10;
     private final int k=25;
     private  int difference;
+    private final int width;
     public ArrayDeque<Block> getObstacles_list() {
         return obstacles_list;
     }
-
-    public Obstacles(int height) {
+    public Obstacles(int width,int height) {
+        this.width=width;
         this.height = height;
         createObstacles(height);
     }
@@ -20,7 +21,7 @@ public class Obstacles {
     private final ArrayDeque<Block> obstacles_list = new ArrayDeque<>();
 
     private void createObstacles(int height) {
-        int startX = 80;
+        int startX = width-10;
         int depth;
         depth = height / 5 + (int) (Math.random() * height / 4);
         obstacles_list.add(new Block(new Point(startX, 0)

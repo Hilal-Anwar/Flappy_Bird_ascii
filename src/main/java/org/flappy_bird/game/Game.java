@@ -8,26 +8,36 @@ import static org.flappy_bird.game.Main.cls;
 
 
 public class Game {
-    final int width = 100;
-    final int height = 40;
+    private final int width;
+    private final int height;
     private Key bird_feather = Key.DOWN;
     int score = 0;
     int level = 0;
+    int bird_frame =0;
     boolean condition = false;
     int speed = 1;
-    private Obstacles obstacles = new Obstacles(height);
-    private ArrayDeque<Block> ob = obstacles.getObstacles_list();
-    private final KeyBoardInput keyBoardInput = new KeyBoardInput();
+    private Obstacles obstacles;
+    private ArrayDeque<Block> ob ;
+    private KeyBoardInput keyBoardInput;
     private HashSet<Integer> memory = new HashSet<>();
-    private BirdParts[] bird = {new BirdParts("O", new Point(30, height / 2)),
-            new BirdParts("/", new Point(29, height / 2 + 1)),
-            new BirdParts("\\", new Point(31, height / 2 + 1)),
-            new BirdParts("/", new Point(28, height / 2 + 2)),
-            new BirdParts("\\", new Point(32, height / 2 + 2)),
-    };
+    private BirdParts[] bird;
+
+    public Game(int width, int height) {
+        this.width = width;
+        this.height = height;
+    }
 
     void start() throws InterruptedException, IOException {
         StringBuilder s = new StringBuilder();
+        keyBoardInput = new KeyBoardInput();
+        obstacles = new Obstacles(width,height);
+        ob = obstacles.getObstacles_list();
+        bird=new BirdParts[]{new BirdParts("O", new Point(width/3, height / 2)),
+                new BirdParts("/", new Point(width/3-1, height / 2 + 1)),
+                new BirdParts("\\", new Point(width/3+1, height / 2 + 1)),
+                new BirdParts("/", new Point(width/3-2, height / 2 + 2)),
+                new BirdParts("\\", new Point(width/3+2, height / 2 + 2)),
+        };
         while (keyBoardInput.getKeyBoardKey() != Key.ESC) {
             boolean condition = !isBirdDead();
             System.out.println(message("", width / 2, Pos.Center, "Flappy Bird") + "\n");
@@ -56,15 +66,15 @@ public class Game {
         if (keyBoardInput.getKeyBoardKey() == Key.SPACE) {
             memory = new HashSet<>();
             condition = false;
-            bird = new BirdParts[]{new BirdParts("O", new Point(30, height / 2)),
-                    new BirdParts("/", new Point(29, height / 2 + 1)),
-                    new BirdParts("\\", new Point(31, height / 2 + 1)),
-                    new BirdParts("/", new Point(28, height / 2 + 2)),
-                    new BirdParts("\\", new Point(32, height / 2 + 2)),
+            bird = new BirdParts[]{new BirdParts("O", new Point(width/3, height / 2)),
+                    new BirdParts("/", new Point(width/3-1, height / 2 + 1)),
+                    new BirdParts("\\", new Point(width/3+1, height / 2 + 1)),
+                    new BirdParts("/", new Point(width/3-2, height / 2 + 2)),
+                    new BirdParts("\\", new Point(width/3+2, height / 2 + 2)),
             };
             score = 0;
             s = new StringBuilder();
-            obstacles = new Obstacles(height);
+            obstacles = new Obstacles(width,height);
             ob = obstacles.getObstacles_list();
         }
         return s;
@@ -124,7 +134,7 @@ public class Game {
         return i == 0 || j == 0 || i == height || j == width;
     }
 
-    private void move(Obstacles ob) {
+    private void move(Obstacles ob) throws InterruptedException {
         var dir = keyBoardInput.getKeyBoardKey();
         var k = ob.getObstacles_list();
         if (dir == Key.UP) {
@@ -139,9 +149,13 @@ public class Game {
                 br.point.y--;
             }
         } else {
+            if (bird_frame ==1){
             for (var br : bird) {
                 br.point.y++;
             }
+            bird_frame =0;
+            }
+            else bird_frame++;
             move_feather(1);
         }
 
@@ -177,7 +191,7 @@ public class Game {
     private boolean isvalidPoint(int j, int i) {
         for (var r : ob) {
             if ((j >= r.edge1().x && j <= r.edge2().x) && (i >= r.edge1().y && i <= r.edge3().y)) {
-                if (j >= 28 && j <= 32) {
+                if (j >= width/3-2 && j <=  width/3+2) {
                     memory.add(i);
                 }
                 return true;
