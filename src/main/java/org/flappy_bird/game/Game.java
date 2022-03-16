@@ -102,7 +102,7 @@ public class Game {
                 boolean b = isvalidPoint(j, i);
                 var is_part = isBirdPart(j, i);
                 if (isSidePoint(j, i))
-                    s.append("\033[0;97m▓\33[0m");
+                    s.append("\033[0;97m█\33[0m");
                 else if (is_part.condition())
                     s.append(is_part.x());
                 else if (b)

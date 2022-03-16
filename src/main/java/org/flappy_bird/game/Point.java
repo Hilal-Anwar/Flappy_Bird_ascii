@@ -10,7 +10,7 @@ public class Point {
     }
 
     public String getBlock() {
-        return "\033[0;32m▓\33[0m";
+        return "\033[0;32m█\33[0m";
     }
 
 }
