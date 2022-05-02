@@ -6,7 +6,7 @@ import java.util.ArrayDeque;
 public class Obstacles {
     private final int height;
     private final int thickness = 10;
-    private final int k=25;
+    private final int k=35;
     private  int difference;
     private final int width;
     public ArrayDeque<Block> getObstacles_list() {
@@ -34,7 +34,7 @@ public class Obstacles {
                 new Point(startX, height),
                 new Point(startX + thickness, height)));
         for (int i = 1; i <= 9; i++) {
-            difference=(int)(Math.random()*k+1);
+            difference=/*(int)(Math.random()*k+1)*/k;
             var r0 = obstacles_list.getLast();
             var edge2 = r0.edge2();
             depth = height / 5 + (int) (Math.random() * height / 4);
@@ -56,7 +56,7 @@ public class Obstacles {
         var edge2 = r0.edge2();
         int depth;
         depth = height / 5 + (int) (Math.random() * height / 4);
-        difference=(int)(Math.random()*k+1);
+        difference=/*(int)(Math.random()*k+1)*/k;
         obstacles_list.add(new Block(new Point(edge2.x + thickness+ difference, 0)
                 , new Point(edge2.x + 2 * thickness+ difference, 0),
                 new Point(edge2.x + thickness+ difference, depth),
