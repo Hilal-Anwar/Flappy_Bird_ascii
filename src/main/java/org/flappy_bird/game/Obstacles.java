@@ -28,7 +28,7 @@ public class Obstacles {
                 , new Point(startX + thickness, 0),
                 new Point(startX, depth),
                 new Point(startX + thickness, depth)));
-        depth = depth + 15;
+        depth = depth + 12;
         obstacles_list.add(new Block(new Point(startX, depth)
                 , new Point(startX + thickness, depth),
                 new Point(startX, height),
@@ -42,7 +42,7 @@ public class Obstacles {
                     , new Point(edge2.x + 2 * thickness+ difference, 0),
                     new Point(edge2.x + thickness+ difference, depth),
                     new Point(edge2.x + 2 * thickness+ difference, depth)));
-            depth = depth + 15;
+            depth = depth + 12;
             obstacles_list.add(new Block(new Point(edge2.x + thickness+ difference, depth)
                     , new Point(edge2.x + thickness * 2+ difference, depth),
                     new Point(edge2.x + thickness+ difference, height),
@@ -61,7 +61,7 @@ public class Obstacles {
                 , new Point(edge2.x + 2 * thickness+ difference, 0),
                 new Point(edge2.x + thickness+ difference, depth),
                 new Point(edge2.x + 2 * thickness+ difference, depth)));
-        depth = depth + 15;
+        depth = depth + 12;
         obstacles_list.add(new Block(new Point(edge2.x + thickness+ difference, depth)
                 , new Point(edge2.x + thickness * 2+ difference, depth),
                 new Point(edge2.x + thickness+ difference, height),

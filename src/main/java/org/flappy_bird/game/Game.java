@@ -26,15 +26,15 @@ public class Game {
     private int MAX_LENGTH = 0;
     String b1= """
                 __     __------
-             __/o `\\ ,~   _~~  .
+            ___/o `\\ ,~   _~~  .
             ~ -.   ,'   _~-----\s
                 `\\     ~~~--_'__
                   `~-==-~~~~~---'
             """;
     String b2= """
-                __             \s
-             __/o `\\           \s
-            ~ -.   ,'\\~~~~~  `\s
+                __            \s
+            ___/o `\\           \s
+            ~ -.   ,'\\~~~~~    \s
                 `\\    ~~~~--_'__
                   `~-==-~~~~~---'
             """;
@@ -92,12 +92,14 @@ public class Game {
         ani.animate();
         bird=_e1.list().toArray(new BirdParts[]{});
         while (keyBoardInput.getKeyBoardKey() != Key.ESC) {
+            System.out.println(_e1.list().size()+"         "+_e2.list().size());
             boolean condition = !isBirdDead();
             _game_frame.append(message("", width / 2, Pos.Center, "Flappy Bird")).append("\n");
             _game_frame = getStringBuilder(_game_frame, condition);
             Thread.sleep(30);
             animate_bird();
             cls();
+            System.gc();
         }
         ani.stopAnimation();
         System.exit(-1);
