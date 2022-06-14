@@ -25,7 +25,7 @@ public class Main {
             """;
 
     public static void main(String[] args) throws InterruptedException, IOException {
-        StringBuilder s = new StringBuilder("=>");
+        StringBuilder s = new StringBuilder("===>");
         int width, height;
         var in = new Scanner(System.in);
         System.out.println("Welcome to Flappy Bird");
