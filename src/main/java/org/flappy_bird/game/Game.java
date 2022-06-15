@@ -92,14 +92,12 @@ public class Game {
         ani.animate();
         bird=_e1.list().toArray(new BirdParts[]{});
         while (keyBoardInput.getKeyBoardKey() != Key.ESC) {
-            System.out.println(_e1.list().size()+"         "+_e2.list().size());
             boolean condition = !isBirdDead();
             _game_frame.append(message("", width / 2, Pos.Center, "Flappy Bird")).append("\n");
             _game_frame = getStringBuilder(_game_frame, condition);
             Thread.sleep(30);
             animate_bird();
             cls();
-            System.gc();
         }
         ani.stopAnimation();
         System.exit(-1);
@@ -211,7 +209,7 @@ public class Game {
         var k = ob.getObstacles_list();
         if (dir == Key.UP) {
             for (var br : bird) {
-                br.point.y = br.point.y - 1;
+                br.point.y = br.point.y - 3;
             }
         } else {
             if (bird_frame == 2) {
