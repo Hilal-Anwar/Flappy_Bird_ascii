@@ -1,23 +1,43 @@
 package org.flappy_bird.game;
 
+import org.jline.utils.InfoCmp;
+
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 
-import static org.flappy_bird.game.Main.cls;
+
 
 
 public class Game {
+    String TITLE = """
+                
+                
+                
+                
+                
+                
+                ____  ______ _                           ____  _         _  ____  \s
+               / / / |  ____| |                         |  _ \\(_)       | | \\ \\ \\ \s
+              / / /  | |__  | | __ _ _ __  _ __  _   _  | |_) |_ _ __ __| |  \\ \\ \\\s
+             < < <   |  __| | |/ _` | '_ \\| '_ \\| | | | |  _ <| | '__/ _` |   > > >
+              \\ \\ \\  | |    | | (_| | |_) | |_) | |_| | | |_) | | | | (_| |  / / /\s
+               \\_\\_\\ |_|    |_|\\__,_| .__/| .__/ \\__, | |____/|_|_|  \\__,_| /_/_/ \s
+                                    | |   | |     __/ |                           \s
+                                    |_|   |_|    |___/                            \s
+                                    
+                                    
+                                    
+            """;
     private final int width;
     private final int height;
     int score = 0;
     int level = 0;
-    int bird_frame = 0;
     boolean condition = false;
-    int speed = 1;
+    int speed = 2;
     private Obstacles obstacles;
+    private Display display;
     private ArrayDeque<Block> ob;
     private KeyBoardInput keyBoardInput;
     private AnimateAsciiImage ani;
@@ -82,8 +102,13 @@ public class Game {
         return new Tuple(builder.toString(),textList);
     }
     void start() throws InterruptedException, IOException {
+        display=new Display();
+        display.terminal.puts(InfoCmp.Capability.clear_screen);
+        StringBuilder s = new StringBuilder("===>");
         StringBuilder _game_frame = new StringBuilder();
-        keyBoardInput = new KeyBoardInput();
+        loading(s);
+
+        keyBoardInput = new KeyBoardInput(display);
         obstacles = new Obstacles(width, height);
         ob = obstacles.getObstacles_list();
         var _e1 = _getEntity(b1);
@@ -95,9 +120,10 @@ public class Game {
             boolean condition = !isBirdDead();
             _game_frame.append(message("", width / 2, Pos.Center, "Flappy Bird")).append("\n");
             _game_frame = getStringBuilder(_game_frame, condition);
-            Thread.sleep(30);
+            Thread.sleep(110);
             animate_bird();
-            cls();
+            display.terminal.puts(InfoCmp.Capability.clear_screen);
+            //cls();
         }
         ani.stopAnimation();
         System.exit(-1);
@@ -119,7 +145,7 @@ public class Game {
     private StringBuilder getStringBuilder(StringBuilder s, boolean condition) throws InterruptedException {
         if (condition) {
             check_for_score();
-            memory.clear();
+            memory=new HashSet<>();
             move(obstacles);
             draw(s);
             s.append(message("Score : " + score, width + 1, Pos.Right, "Level : " + level));
@@ -204,7 +230,7 @@ public class Game {
         return i == 0 || j == 0 || i == height || j == width;
     }
 
-    private void move(Obstacles ob) throws InterruptedException {
+    private void move(Obstacles ob) {
         var dir = keyBoardInput.getKeyBoardKey();
         var k = ob.getObstacles_list();
         if (dir == Key.UP) {
@@ -212,12 +238,9 @@ public class Game {
                 br.point.y = br.point.y - 3;
             }
         } else {
-            if (bird_frame == 2) {
                 for (var br : bird) {
                     br.point.y++;
                 }
-                bird_frame = 0;
-            } else bird_frame++;
         }
 
         for (var r : k) {
@@ -256,5 +279,14 @@ public class Game {
     }
     record Tuple(String s,ArrayList<BirdParts> list){
 
+    }
+    private void loading(StringBuilder s) throws InterruptedException {
+        while (s.length() <= 65) {
+            System.out.println(TITLE.indent(25));
+            s.insert(0, "=");
+            System.out.println(s.toString().indent(25));
+            Thread.sleep(10);
+            display.terminal.puts(InfoCmp.Capability.clear_screen);
+        }
     }
 }
