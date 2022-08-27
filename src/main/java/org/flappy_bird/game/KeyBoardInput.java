@@ -1,8 +1,5 @@
 package org.flappy_bird.game;
 
-import org.jline.terminal.Terminal;
-import org.jline.terminal.TerminalBuilder;
-
 import java.io.IOException;
 
 public class KeyBoardInput {

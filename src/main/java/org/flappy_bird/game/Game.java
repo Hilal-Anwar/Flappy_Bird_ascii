@@ -2,7 +2,6 @@ package org.flappy_bird.game;
 
 import org.jline.utils.InfoCmp;
 
-import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -63,18 +62,6 @@ public class Game {
         this.width = width;
         this.height = height;
     }
-    public ArrayList<BirdParts> getEntity(String name){
-        var list=name.split("\n");
-        var textList=new ArrayList<BirdParts>();
-        for(int j=0;j<list.length;j++){
-            String points=list[j];
-            for (int i = 0; i < points.length(); i++) {
-                textList.add(new BirdParts(""+points.charAt(i),new Point(width/3+i,height/2+j)));
-                MAX_LENGTH=Math.max(MAX_LENGTH,points.length()-1);
-            }
-        }
-        return textList;
-    }
     public Tuple _getEntity(String name) {
         var list = name.split("\n");
         StringBuilder builder=new StringBuilder();
@@ -101,7 +88,7 @@ public class Game {
         }
         return new Tuple(builder.toString(),textList);
     }
-    void start() throws InterruptedException, IOException {
+    void start() throws InterruptedException {
         display=new Display();
         display.terminal.puts(InfoCmp.Capability.clear_screen);
         StringBuilder s = new StringBuilder("===>");
@@ -118,7 +105,7 @@ public class Game {
         bird=_e1.list().toArray(new BirdParts[]{});
         while (keyBoardInput.getKeyBoardKey() != Key.ESC) {
             boolean condition = !isBirdDead();
-            _game_frame.append(message("", width / 2, Pos.Center, "Flappy Bird")).append("\n");
+            _game_frame.append(message("", width / 2, Position.Center, "Flappy Bird")).append("\n");
             _game_frame = getStringBuilder(_game_frame, condition);
             Thread.sleep(110);
             animate_bird();
@@ -142,19 +129,19 @@ public class Game {
         }
     }
 
-    private StringBuilder getStringBuilder(StringBuilder s, boolean condition) throws InterruptedException {
+    private StringBuilder getStringBuilder(StringBuilder s, boolean condition) {
         if (condition) {
             check_for_score();
             memory=new HashSet<>();
             move(obstacles);
             draw(s);
-            s.append(message("Score : " + score, width + 1, Pos.Right, "Level : " + level));
+            s.append(message("Score : " + score, width + 1, Position.Right, "Level : " + level));
             System.out.println(s);
             s = new StringBuilder();
         } else {
             ani.stopAnimation();
             draw(s);
-            s.append(message("Score : " + score, width + 1, Pos.Right, "Level : " + level)).append("\n");
+            s.append(message("Score : " + score, width + 1, Position.Right, "Level : " + level)).append("\n");
             s.append("Oh! I got stuck by an obstacle. Best luck next time :)").append("\n");
             s.append("Enter the space bar to continue or press ESC to exit.");
             System.out.println(s);
@@ -211,8 +198,8 @@ public class Game {
         }
     }
 
-    private String message(String startWith, int length, Pos pos, String endWith) {
-        return switch (pos) {
+    private String message(String startWith, int length, Position position, String endWith) {
+        return switch (position) {
             case Left, Right -> startWith + (" ".repeat(length - startWith.length() - endWith.length())) + endWith;
             case Center -> startWith + (" ".repeat(length - startWith.length() - endWith.length() / 2)) + endWith;
         };

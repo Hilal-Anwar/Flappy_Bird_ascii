@@ -1,5 +1,6 @@
 org\flappy_bird\game\Pos.class
 org\flappy_bird\game\BirdParts.class
+org\flappy_bird\game\Display.class
 org\flappy_bird\game\IsPart.class
 org\flappy_bird\game\AnimateAsciiImage.class
 org\flappy_bird\game\Block.class
