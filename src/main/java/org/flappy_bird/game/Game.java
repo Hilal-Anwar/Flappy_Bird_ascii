@@ -105,7 +105,8 @@ public class Game {
         bird=_e1.list().toArray(new BirdParts[]{});
         while (keyBoardInput.getKeyBoardKey() != Key.ESC) {
             boolean condition = !isBirdDead();
-            _game_frame.append(message("", width / 2, Position.Center, "Flappy Bird")).append("\n");
+            _game_frame.append(message("",
+                    width / 2, Position.Center, "Flappy Bird")).append("\n");
             _game_frame = getStringBuilder(_game_frame, condition);
             Thread.sleep(110);
             animate_bird();
