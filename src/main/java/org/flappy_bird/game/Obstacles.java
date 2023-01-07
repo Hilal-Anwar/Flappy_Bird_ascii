@@ -6,7 +6,7 @@ import java.util.ArrayDeque;
 public class Obstacles {
     private final int height;
     private final int thickness = 8;
-    private final int k=15;
+    private  int k=15;
     private  int difference;
     private final int width;
     public ArrayDeque<Block> getObstacles_list() {
@@ -15,6 +15,7 @@ public class Obstacles {
     public Obstacles(int width,int height) {
         this.width=width;
         this.height = height;
+        k=width/(int)(Math.log10(width*width*width));
         createObstacles(height);
     }
 
@@ -69,7 +70,7 @@ public class Obstacles {
     }
 
     private int getStupidConstant(int constant){
-        return constant+ (int) (Math.random() * height / constant+1);
+        return constant+ (int) ((Math.random() * height) / constant+1);
     }
 
 }
