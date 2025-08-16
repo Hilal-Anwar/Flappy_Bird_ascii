@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 
-
-
 public class Game {
     String TITLE = """
                 
@@ -43,14 +41,14 @@ public class Game {
     private HashSet<Integer> memory = new HashSet<>();
     private BirdParts[] bird;
     private int MAX_LENGTH = 0;
-    String b1= """
+    String b1 = """
                 __     __------
             ___/o `\\ ,~   _~~  .
             ~ -.   ,'   _~-----\s
                 `\\     ~~~--_'__
                   `~-==-~~~~~---'
             """;
-    String b2= """
+    String b2 = """
                 __            \s
             ___/o `\\           \s
             ~ -.   ,'\\~~~~~    \s
@@ -62,34 +60,34 @@ public class Game {
         this.width = width;
         this.height = height;
     }
+
     public Tuple _getEntity(String name) {
         var list = name.split("\n");
-        StringBuilder builder=new StringBuilder();
+        StringBuilder builder = new StringBuilder();
         var textList = new ArrayList<BirdParts>();
         for (int j = 0; j < list.length; j++) {
             String points = list[j];
-            for (int i = points.length()-1; i >=0; i--) {
+            for (int i = points.length() - 1; i >= 0; i--) {
                 int i1 = width / 3 +
                         (points.length() - 1 - i);
-                if (points.charAt(i)=='/'){
-                  textList.add(new BirdParts("" +'\\', new Point(i1, height / 2 + j)));
-                  builder.append("" +'\\');
-                }
-                else if (points.charAt(i)=='\\'){
+                if (points.charAt(i) == '/') {
+                    textList.add(new BirdParts("" + '\\', new Point(i1, height / 2 + j)));
+                    builder.append("" + '\\');
+                } else if (points.charAt(i) == '\\') {
                     textList.add(new BirdParts("" + '/', new Point(i1, height / 2 + j)));
                     builder.append("" + '/');
-                }
-                else {
+                } else {
                     textList.add(new BirdParts("" + points.charAt(i), new Point(i1, height / 2 + j)));
                     builder.append(points.charAt(i));
                 }
                 MAX_LENGTH = Math.max(MAX_LENGTH, points.length() - 1);
             }
         }
-        return new Tuple(builder.toString(),textList);
+        return new Tuple(builder.toString(), textList);
     }
+
     void start() throws InterruptedException {
-        display=new Display();
+        display = new Display();
         display.terminal.puts(InfoCmp.Capability.clear_screen);
         StringBuilder s = new StringBuilder("===>");
         StringBuilder _game_frame = new StringBuilder();
@@ -100,17 +98,18 @@ public class Game {
         ob = obstacles.getObstacles_list();
         var _e1 = _getEntity(b1);
         var _e2 = _getEntity(b2);
-        ani=new AnimateAsciiImage(_e1.s(),_e2.s());
+        ani = new AnimateAsciiImage(_e1.s(), _e2.s());
         ani.animate();
-        bird=_e1.list().toArray(new BirdParts[]{});
+        bird = _e1.list().toArray(new BirdParts[]{});
         while (keyBoardInput.getKeyBoardKey() != Key.ESC) {
             boolean condition = !isBirdDead();
             _game_frame.append(message("",
                     width / 2, Position.Center, "Flappy Bird")).append("\n");
             _game_frame = getStringBuilder(_game_frame, condition);
-            Thread.sleep(110);
+            Thread.sleep(70);
             animate_bird();
-            display.terminal.puts(InfoCmp.Capability.clear_screen);
+            //display.terminal.puts(InfoCmp.Capability.clear_screen);
+            System.out.print("\u001b[H");
             //cls();
         }
         ani.stopAnimation();
@@ -119,11 +118,11 @@ public class Game {
 
     private void animate_bird() {
         var list = ani.getF1().split("\n");
-        int j=0;
-        for (int i = 0; i < bird.length;) {
-            var str=list[j];
-            for (int k = 0; k <str.length() ; k++) {
-                bird[i].text=""+str.charAt(k);
+        int j = 0;
+        for (int i = 0; i < bird.length; ) {
+            var str = list[j];
+            for (int k = 0; k < str.length(); k++) {
+                bird[i].text = "" + str.charAt(k);
                 i++;
             }
             j++;
@@ -133,16 +132,18 @@ public class Game {
     private StringBuilder getStringBuilder(StringBuilder s, boolean condition) {
         if (condition) {
             check_for_score();
-            memory=new HashSet<>();
+            memory = new HashSet<>();
             move(obstacles);
             draw(s);
-            s.append(message("Score : " + score, width + 1, Position.Right, "Level : " + level));
+            s.append(message("Score : " + score, width + 1, Position.Right,
+                    "Level : " + level));
             System.out.println(s);
             s = new StringBuilder();
         } else {
             ani.stopAnimation();
             draw(s);
-            s.append(message("Score : " + score, width + 1, Position.Right, "Level : " + level)).append("\n");
+            s.append(message("Score : " + score, width + 1, Position.Right,
+                    "Level : " + level)).append("\n");
             s.append("Oh! I got stuck by an obstacle. Best luck next time :)").append("\n");
             s.append("Enter the space bar to continue or press ESC to exit.");
             System.out.println(s);
@@ -226,9 +227,9 @@ public class Game {
                 br.point.y = br.point.y - 3;
             }
         } else {
-                for (var br : bird) {
-                    br.point.y++;
-                }
+            for (var br : bird) {
+                br.point.y++;
+            }
         }
 
         for (var r : k) {
@@ -241,6 +242,7 @@ public class Game {
         }
         keyBoardInput.setKeyBoardKey(Key.NONE);
     }
+
     private boolean isValidPoint(int j, int i) {
         for (var r : ob) {
             if ((j >= r.edge1().x && j <= r.edge2().x) && (i >= r.edge1().y && i <= r.edge3().y)) {
@@ -265,9 +267,11 @@ public class Game {
 
         return false;
     }
-    record Tuple(String s,ArrayList<BirdParts> list){
+
+    private record Tuple(String s, ArrayList<BirdParts> list) {
 
     }
+
     private void loading(StringBuilder s) throws InterruptedException {
         while (s.length() <= 65) {
             System.out.println(TITLE.indent(25));

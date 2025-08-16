@@ -2,11 +2,12 @@ package org.flappy_bird.game;
 
 
 import java.io.IOException;
+import java.util.concurrent.Executors;
 
 public class KeyBoardInput {
      private Key keyBoardKey=Key.NONE;
     public KeyBoardInput(Display display) {
-        new Thread(() -> {
+        Executors.newVirtualThreadPerTaskExecutor().execute(()->{
             while (true) {
                 try {
                     setKeyBoardKey(getKeys(display.terminal.reader().read()));
@@ -14,7 +15,10 @@ public class KeyBoardInput {
                     throw new RuntimeException(e);
                 }
             }
-        }).start();
+        });
+        /*Thread.startVirtualThread(() -> {
+
+        }).start();*/
     }
     private static Key getKeys(int ch) {
         return switch (ch) {
